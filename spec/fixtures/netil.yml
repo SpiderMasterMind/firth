@@ -1,0 +1,8 @@
+---
+standard:
+  title: bens stream
+  username: ben
+  streams:
+    pri: http://example.com:443/live/production/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/playlist.m3u8?ua=Primary%20Integration%20Tester
+    ftp: ftp://example.com:443/live/production/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?ua=Primary%20Integration%20Tester
+    progressive: http://example.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?ua=Primary%20Integration
