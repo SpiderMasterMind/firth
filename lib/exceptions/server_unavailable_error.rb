@@ -1,0 +1,1 @@
+class ServerUnavailableError < StandardError; end

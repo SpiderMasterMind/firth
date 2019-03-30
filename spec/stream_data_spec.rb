@@ -1,4 +1,5 @@
 require 'stream_data'
+require 'exceptions/server_unavailable_error'
 
 RSpec.describe do
   describe StreamData do
@@ -52,15 +53,8 @@ RSpec.describe do
           end
 
           it 'raises an error' do
-            expect{ fetch }.to raise_error
+            expect{ fetch }.to raise_error(ServerUnavailableError)
           end
-        end
-      end
-
-      context 'without a URL' do
-        let(:url) { 'garbage' }
-        it 'raises an error' do
-          expect{ fetch }.to raise_error
         end
       end
     end

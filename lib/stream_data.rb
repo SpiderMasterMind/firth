@@ -8,28 +8,22 @@ class StreamData
   end
 
   def fetch
-    response = Faraday.get(@url)
-  # rescue Faraday::ConnectionFailed
-  #   bad_missing_url_error
-    @success = response.success?
-    @status = response.status
-    @payload = response.body
-    server_unavailable unless @success
-    self
+    set_attributes(Faraday.get(@url))
+    # todo check Faraday::Connection error raises
   end
-
-  # def metadata
-    # provides json values from keys
-  # end
 
   private
 
-  def server_unavailable_error
-    # todo I18n
-    raise 'server unavailable'
+  def set_attributes(response)
+    @success = response.success?
+    @status = response.status
+    @payload = response.body
+    server_unavailable_error unless @success
+    self
   end
 
-  def url_missing_error
-    raise 'url missing'
+  def server_unavailable_error
+    # todo I18n
+    raise ServerUnavailableError, "Status code: #{@status}"
   end
 end
