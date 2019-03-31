@@ -1,0 +1,13 @@
+#!/usr/bin/ruby
+# frozen_string_literal: true
+
+require './lib/firth.rb'
+require './lib/stream_data_request.rb'
+require './lib/ffmpeg_request.rb'
+
+firth = Firth.new(
+  output: [],
+  url: ARGV.first
+)
+
+firth.run

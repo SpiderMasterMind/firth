@@ -1,19 +1,19 @@
+# frozen_string_literal: true
+
 require 'stream_data_request'
 require 'exceptions/server_unavailable_error'
 
 RSpec.describe do
   describe StreamDataRequest do
     subject { described_class.new(options) }
-    let(:options) do 
+    let(:options) do
       { url: url }
     end
 
     let(:url) { 'http://test.com' }
     let(:payload) do
-      YAML.load_file("spec/fixtures/#{filename}").to_json
+      YAML.load_file('spec/fixtures/netil.yml').to_json
     end
-
-    let(:filename) { 'netil.yml' }
 
     it { is_expected.to be_a(described_class) }
 
@@ -53,7 +53,7 @@ RSpec.describe do
           end
 
           it 'raises an error' do
-            expect{ fetch }.to raise_error(ServerUnavailableError)
+            expect { fetch }.to raise_error(ServerUnavailableError)
           end
         end
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ffmpeg_request'
 require 'exceptions/ffmpeg_service_error'
 
@@ -6,8 +8,8 @@ describe FfmpegRequest do
   let(:options) do
     {
       cli_client: cli_client,
-      cli_args: 'args',
-      response_parser_class: response_parser_class
+      response_parser_class: response_parser_class,
+      stream_url: 'https://example.com'
     }
   end
 
@@ -32,7 +34,7 @@ describe FfmpegRequest do
     subject(:execute) { ffmpeg_request.execute }
 
     it 'calls the cli client' do
-      expect(cli_client).to receive(:capture3).with(options[:cli_args])
+      expect(cli_client).to receive(:capture3).with(any_args)
       execute
     end
 
@@ -46,13 +48,12 @@ describe FfmpegRequest do
 
   describe '#process_request' do
     subject(:process_request) do
-      ffmpeg_request.execute.process_output
+      ffmpeg_request.execute.parsed_output
     end
 
-    it 'dumps cli stderr to console' do
+    it 'calls the response parser' do
       expect(response_parser_class).to receive(:new)
       process_request
     end
   end
 end
-

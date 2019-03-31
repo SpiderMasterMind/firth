@@ -1,5 +1,9 @@
-require 'faraday'
+# frozen_string_literal: true
 
+require 'faraday'
+require_relative './exceptions/server_unavailable_error.rb'
+
+# requests stream data via http client
 class StreamDataRequest
   attr_reader :status, :success, :payload
 
@@ -8,22 +12,22 @@ class StreamDataRequest
   end
 
   def fetch
-    set_attributes(Faraday.get(@url))
-    # todo check Faraday::Connection error raises
+    puts "Requesting data from: #{@url}"
+    process_response(Faraday.get(@url))
     self
   end
 
   private
 
-  def set_attributes(response)
-    @success = response.success?
-    @status = response.status
-    @payload = response.body
+  def process_response(http_client)
+    @success = http_client.success?
+    @status = http_client.status
+    @payload = http_client.body
     server_unavailable_error unless @success
   end
 
   def server_unavailable_error
-    # todo I18n
+    # TODO: I18n
     raise ServerUnavailableError, "Status code: #{@status}"
   end
 end
