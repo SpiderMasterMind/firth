@@ -1,6 +1,6 @@
 require 'faraday'
 
-class StreamData
+class StreamDataRequest
   attr_reader :status, :success, :payload
 
   def initialize(options = {})
@@ -10,6 +10,7 @@ class StreamData
   def fetch
     set_attributes(Faraday.get(@url))
     # todo check Faraday::Connection error raises
+    self
   end
 
   private
@@ -19,7 +20,6 @@ class StreamData
     @status = response.status
     @payload = response.body
     server_unavailable_error unless @success
-    self
   end
 
   def server_unavailable_error

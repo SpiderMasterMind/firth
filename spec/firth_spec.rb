@@ -1,6 +1,5 @@
 require 'firth'
-require 'json_parser'
-require 'stream_data'
+require 'stream_data_request'
 require 'ffmpeg_request'
 
 RSpec.describe do
@@ -9,23 +8,26 @@ RSpec.describe do
     let(:options) do
       { 
         # todo stream data 'request'? for ref.
-        stream_data_class: stream_data_class,
-        json_parser_class: json_parser_class,
-        ffmpeg_request_class: ffmpeg_request_class
+        stream_data_request_class: stream_data_request_class,
+        ffmpeg_request_class: ffmpeg_request_class,
+        stream_data_response: stream_data_response
       }
     end
 
-    let(:stream_data_class) do
-      class_double(StreamData, new: stream_data)
+    let(:stream_data_response) do
+      JSON.parse(
+        YAML.load_file(
+          'spec/fixtures/stream_data_response.yml'
+        ).fetch('netil')
+      )
     end
 
-    # todo  instance_double
+    let(:stream_data_request_class) do
+      class_double(StreamDataRequest, new: stream_data)
+    end
+
+    # todo  instance_double usage?
     let(:stream_data) { double('stream_data') }
-
-    let(:json_parser_class) do
-      class_double(JsonParser, new: double)
-    end
-
     let(:ffmpeg_request_class) do
       class_double(FfmpegRequest, new: double)
     end
@@ -34,32 +36,17 @@ RSpec.describe do
 
     describe '#run' do
       subject(:run) { described_class.new(options).run }
-
-      it 'instantiates the stream data object' do
-        expect(stream_data_class).to receive(:new)
-        run
-      end
-
-      it 'instantiates the json parser object' do
-        expect(json_parser_class).to receive(:new)
-        run
-      end
-
-      it 'instantiates the json parser object with stream data object' do
-        expect(json_parser_class).to receive(:new).with(
-          hash_including(stream_data: stream_data))
-        run
-      end
-
-      xit 'instantiates the json parser object with fields to display' do
-        expect(json_parser_class).to receive(:new).with(
-          hash_including(fields: fields))
-        run
-      end
-
-      it 'instantiates the ffmpeg service with a url' do
+      it 'instantiates the ffmpeg request object with a url' do
         expect(ffmpeg_request_class).to receive(:new)
         run
+      end
+
+      context 'with stream response json' do
+        it 'calls the ffmpeg request service for each stream' do
+          streams = stream_data_response.fetch("streams").length
+          expect(ffmpeg_request_class).to receive(:new).exactly(streams).times
+          run
+        end
       end
     end
   end

@@ -1,0 +1,3 @@
+---
+netil:
+  "{\"title\":\"koolfmlive on Mixlr\",\"username\":\"koolfmlive\",\"streams\":{\"hls\":\"http://edge02.mixlr.com:443/live/production/e1b234a7e0c1e6806ea0afd7b114bc14/playlist.m3u8?ua=Mixlr%20Integration%20Tester\",\"rtmp\":\"rtmp://edge02.mixlr.com:443/live/production/e1b234a7e0c1e6806ea0afd7b114bc14?ua=Mixlr%20Integration%20Tester\",\"progressive\":\"http://listen1.mixlr.com/e1b234a7e0c1e6806ea0afd7b114bc14?ua=Mixlr%20Integration%20Tester\"}}"

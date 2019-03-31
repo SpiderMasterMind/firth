@@ -1,8 +1,8 @@
-require 'stream_data'
+require 'stream_data_request'
 require 'exceptions/server_unavailable_error'
 
 RSpec.describe do
-  describe StreamData do
+  describe StreamDataRequest do
     subject { described_class.new(options) }
     let(:options) do 
       { url: url }

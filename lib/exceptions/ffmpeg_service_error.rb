@@ -1,0 +1,1 @@
+class FfmpegServiceError < StandardError; end
